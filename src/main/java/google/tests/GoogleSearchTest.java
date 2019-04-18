@@ -1,8 +1,10 @@
 package google.tests;
 
-import google.Factory.DriverManagerFactory;
-import google.Factory.DriverType;
-import google.manager.DriverManager;
+import google.manager.DriverChain;
+import google.manager.IdBrowsers;
+import google.manager.chrome.ChromeDriverManager;
+import google.manager.gecko.GeckoDriverManager;
+import google.manager.internetexplorer.InternetExplorerDriverManager;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 
@@ -10,22 +12,26 @@ import static org.junit.Assert.assertEquals;
 
 public class GoogleSearchTest {
 
-    private static DriverManager driverManager;
-    WebDriver webDriver;
+    private static DriverChain driverChain;
+    private WebDriver webDriver;
 
     @BeforeClass
     public static void setup(){
-        driverManager = DriverManagerFactory.getManager(DriverType.CHROME);
+        //Creating the chain
+        driverChain = new GeckoDriverManager();
+        driverChain.setNext(new InternetExplorerDriverManager());
+        driverChain.setNext(new ChromeDriverManager());
     }
 
     @Before
-    public void before() {
-        webDriver = driverManager.getWebDriver();
+    public void before() throws Exception {
+        //Asking for Internet Explorer driver.
+        webDriver = driverChain.getWebDriver(IdBrowsers.IEXPLORER);
     }
 
     @After
     public void after() {
-        driverManager.quitDriver();
+        driverChain.quitDriver(webDriver);
     }
 
     @Test

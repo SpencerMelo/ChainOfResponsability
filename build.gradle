@@ -14,5 +14,5 @@ repositories {
 dependencies {
     compile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.13.0'
 }

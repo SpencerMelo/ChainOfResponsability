@@ -1,17 +1,22 @@
 package google.manager.chrome;
 
-import google.manager.DriverManager;
+import google.manager.DriverChain;
+import google.manager.IdBrowsers;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
-import java.io.InputStream;
 
-public class ChromeDriverManager extends DriverManager {
+public class ChromeDriverManager extends DriverChain {
 
     private ChromeDriverService chromeDriverService;
+
+    public ChromeDriverManager() {
+        super(IdBrowsers.CHROME);
+    }
 
     @Override
     protected void startService() {
@@ -27,12 +32,12 @@ public class ChromeDriverManager extends DriverManager {
     }
 
     @Override
-    protected void createWebDriver() {
+    protected WebDriver createWebDriver() {
         DesiredCapabilities desiredCapabilities = DesiredCapabilities.chrome();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("test-type");
         desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        webDriver = new ChromeDriver(chromeDriverService, desiredCapabilities);
+        return new ChromeDriver(chromeDriverService, desiredCapabilities);
     }
 
     @Override
