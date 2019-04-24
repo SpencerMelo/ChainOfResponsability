@@ -16,7 +16,7 @@ public class GoogleSearchTest {
     private WebDriver webDriver;
 
     @BeforeClass
-    public static void setup(){
+    public static void chainSetup() {
         //Creating the chain
         driverChain = new GeckoDriverManager();
         driverChain.setNext(new InternetExplorerDriverManager());
@@ -24,13 +24,13 @@ public class GoogleSearchTest {
     }
 
     @Before
-    public void before() throws Exception {
+    public void setup() throws Exception {
         //Asking for Internet Explorer driver.
         webDriver = driverChain.getWebDriver(IdBrowsers.IEXPLORER);
     }
 
     @After
-    public void after() {
+    public void tearDown() {
         driverChain.quitDriver(webDriver);
     }
 
